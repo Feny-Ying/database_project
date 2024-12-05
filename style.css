@@ -1,0 +1,335 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+html, body {
+    height: 100%; 
+}
+
+body {
+    display: flex;
+    flex-direction: column; 
+}
+
+.content {
+    flex: 1; 
+    padding: 20px;
+    background-color: #f4f4f4;
+    overflow: auto; 
+}
+
+
+
+header{
+    background-color: rgba(35,26,28,0.8);
+    height: 80px;
+    width: 100%;
+    position: fixed;
+}
+
+h1{
+color: white;
+position:absolute;
+left:120px;
+top:0;
+line-height:80px;
+background-image:url(images/Fenyying.png);
+background-repeat: no-repeat;
+background-position: center;
+width:275px;
+text-indent: -9999px;
+}
+header ul{
+    position:absolute;
+    right:5vw;
+    top: 0;
+    line-height:80px;
+}
+header li{
+    display:inline;
+    margin-right: 4vw;
+}
+header a {
+    font-size: 20px;
+    color: white;
+    text-decoration: none;
+}
+header h2 {
+    position: absolute;
+    right: 320px;
+    top: 30px;
+    font-size: 20px;
+    color: white;
+}
+header a:hover{
+    text-decoration: underline;
+}
+
+.ayame {
+    background-color: rgba(14, 10, 13, 0.5);
+    color: rgb(40, 8, 31);
+    height: 140vh;
+    background-image: url(https://www.agoda.com/wp-content/uploads/2024/06/tokyo-japan.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: darken;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+    .ayame h2 {
+        color: white;
+        font-size: 80px;
+    }
+.ayame a{
+    font-size: 18px;
+    color: rgb(18, 17, 17);
+    text-decoration: none;
+    border:1px solid #ACACAC;
+    padding: 10px 20px;
+    border-radius:5px;
+}
+.ayame p{
+    color: #847be8;
+    font-size: 30px;
+    margin: 25px 0;
+}
+footer {
+    background-color: #231c12;
+    color: white;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    
+}
+.ina{
+    background-color: rgba(2, 2, 18, 0.4);
+    color: rgb(47, 17, 242);
+    height: 140vh;
+    background-image: url(images/maxresdefault.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: darken;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content:center;
+
+}
+.ina h2{
+    font-size: 80px;
+}
+.ina a{
+    font-size: 18px;
+    color: rgb(18, 17, 17);
+    text-decoration: none;
+    border:1px solid #ACACAC;
+    padding: 10px 20px;
+    border-radius:5px;
+}
+.ina p{
+    color: #100e1e;
+    font-size: 30px;
+    margin: 25px 0;
+}
+
+.aqua{
+    background-color: rgba(2, 2, 18, 0.4);
+    color: rgba(243, 57, 184, 0.6);
+    height: 140vh;
+    background-image: url(images/1568913536_rl6wc7_1568913483_11s0bav_att-url-download.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: darken;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content:center;
+
+}
+.aqua h2{
+    font-size: 80px;
+}
+.aqua a{
+    font-size: 18px;
+    color: rgb(18, 17, 17);
+    text-decoration: none;
+    border:1px solid #ACACAC;
+    padding: 10px 20px;
+    border-radius:5px;
+}
+.aqua p{
+    color: #0c0554;
+    font-size: 30px;
+    margin: 25px 0;
+}
+
+.korone{
+    background-color: rgba(2, 2, 18, 0.4);
+    color: rgba(72, 30, 4);
+    height: 140vh;
+    background-image: url(images/23ebd08a946caecc989d41fc2d43c0f008a62d24.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: darken;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content:center;
+
+}
+.korone h2{
+    font-size: 80px;
+}
+.korone a{
+    font-size: 18px;
+    color: rgb(230, 14, 43);
+    text-decoration: none;
+    border:1px solid #ACACAC;
+    padding: 10px 20px;
+    border-radius:5px;
+}
+.korone p{
+    color: #e7df09;
+    font-size: 30px;
+    margin: 25px 0;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    margin: 0 5px;
+    padding: 8px 12px;
+    text-decoration: none;
+    background-color: #f1f1f1;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.pagination a:hover {
+    background-color: #ddd;
+}
+
+.pagination a.active {
+    background-color: #007bff;
+    color: white;
+    border: 1px solid #007bff;
+}
+
+.fixed-right {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 220px;
+    height: 100%;
+    background-color: #f0f0f0;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.content {
+    margin-top: 60px; 
+    margin-right: 220px;
+    padding: 20px;
+}
+
+
+
+.menu{
+    display: none;
+
+}
+/* 響應式設計語法 */
+@media screen and (max-width:768px){
+    header ul{
+        display: none;
+    }
+    header h1{
+        left:50%;
+        transform: translate(-50%);
+    }
+    .menu{
+        display: block;
+        background-color: transparent;
+        color: white;
+        font-size: 35px;
+        position: absolute;
+        top:15px;
+        left:20px;
+        border:none;
+        cursor: pointer;
+    }
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #efe9e7;
+}
+
+a {
+    text-decoration: none;
+    color: #3d1101;
+}
+
+.wrap {
+    position: absolute; 
+    left: 80px;
+    width: 100%; 
+    max-width: 760px; 
+    margin: 20px auto;
+}
+
+
+
+.search {
+    position: relative;
+    width: 100%;
+    float: left;
+}
+
+.search-bar {
+    width: 100%;
+    height: 32px;
+    font-size: 20px;
+    border: 3px solid #3d1101;
+    background-color: #efe9e7;
+}
+
+.search-btn {
+    width: 36px;
+    height: 32px;
+    background-color: #3d1101;
+    color: #efe9e7;
+    outline: none;
+    border: 2px solid #3d1101;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+
+
+.pay {
+    padding-right: 10px;
+    border-right: 1px solid #3d1101;
+}
+
+
+

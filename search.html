@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vtuber love</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <button class="menu">&#9776</button>
+        <form method="POST">
+            <div class="wrap">
+                <div class="search">
+                    <input class="search-bar" type="text" name="search" id="search" placeholder="輸入關鍵字">
+                    <button class="search-btn">
+                    </button>
+                </div>
+            </div>
+        </form>
+        <h2>Welcome, {{ session['username'] }}!</h2>
+        <ul>
+            <li><a href="/list">List</a></li>
+        </ul>
+
+    </header>
+    <div class="content">
+        <ul>
+            <h2>1</h2>
+            <h2>1</h2>
+            <h2>1</h2>
+            <h2>1</h2>
+            <h2>1</h2>
+            <h2>1</h2>
+            <h2>1</h2>
+            <h2>1</h2>
+            <h2>1</h2>
+            <h2>1</h2>
+            <h2>1</h2>
+            <h2>1</h2>
+            <h2>1</h2>
+            <h2>1</h2>
+            <h2>1</h2>
+            <h2>1</h2>
+            <h2>1</h2>
+            <h2>1</h2>
+            <h2>1</h2>
+            <h2>1</h2>
+            <h2>1</h2>
+            <h2>1</h2>
+            <h2>1</h2>
+            <h2>1</h2>
+            {% for result in results %}
+            <li>
+                {% if result[1].endswith(('.jpg', '.png', '.gif')) %}
+                <img src="{{ result[1] }}" alt="Image" style="max-width: 200px; height: auto;">
+                {% else %}
+                {{ result[1] }}
+                {% endif %}
+                - {{ result[2] }}
+            </li>
+            {% endfor %}
+        </ul>
+
+        <div class="pagination">
+            {% if page > 1 %}
+            <a href="/search?search={{ keyword }}&page={{ page - 1 }}">Previous</a>
+            {% endif %}
+
+            {% for i in range(1, total_pages + 1) %}
+            <a href="/search?search={{ keyword }}&page={{ i }}" class="{% if i == page %}active{% endif %}">
+                {{ i }}
+            </a>
+            {% endfor %}
+
+            {% if page < total_pages %}
+            <a href="/search?search={{ keyword }}&page={{ page + 1 }}">Next</a>
+            {% endif %}
+        </div>
+    </div>
+    <footer>
+        <p>copyright @fenyying's web ALL Rights Reserved</p>
+    </footer>
+</body>
+</html>
