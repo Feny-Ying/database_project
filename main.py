@@ -11,7 +11,7 @@ db_config = {
     'host': 'localhost',  # Change this to your MySQL host
     'user': 'root',  # Change this to your MySQL username
     'password': '24280143',  # Change this to your MySQL password
-    'database': 'db_project'  # Change this to your MySQL database name
+    'database': 'db_project',  # Change this to your MySQL database name
 }
 
 # Database Connection
@@ -21,6 +21,9 @@ def get_db_connection():
 # Main
 @app.route("/", methods=["GET", "POST"])
 def main():
+    if 'username' in session:
+        session.pop('username', None)
+    
     if request.method == "POST":
         search = request.form['search']
         
@@ -28,10 +31,14 @@ def main():
         
     return render_template("main.html")
 
-# Main_User
-@app.route("/main", methods=["GET", "POST"])
+#Main_User
+@app.route("/main_user", methods=["GET", "POST"])
 def main_user():
-    
+    if request.method == "POST":
+        search = request.form['search']
+        
+        return redirect("/search")
+        
     return render_template("main_user.html")
 
 # Search
@@ -79,7 +86,7 @@ def login():
                 stored_password = result[0]
                 if stored_password == hashed_password:
                     session['username'] = username
-                    return redirect("/main")
+                    return redirect("/main_user")
                 else:
                     flash("Incorrect password.", "danger")
             else:
