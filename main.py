@@ -9,43 +9,77 @@ app.secret_key = "your_secret_key"
 # Database Configuration
 db_config = {
     'host': 'localhost',  # Change this to your MySQL host
-    'user': 'ggh',  # Change this to your MySQL username
-    'password': '0721',  # Change this to your MySQL password
-    'database': 'hw3'  # Change this to your MySQL database name
+    'user': 'root',  # Change this to your MySQL username
+    'password': '24280143',  # Change this to your MySQL password
+    'database': 'db_project'  # Change this to your MySQL database name
 }
 
 # Database Connection
 def get_db_connection():
     return mysql.connector.connect(**db_config)
 
-# Login Page
+# Main
 @app.route("/", methods=["GET", "POST"])
+def main():
+    if request.method == "POST":
+        search = request.form['search']
+        
+        return redirect("/search")
+        
+    return render_template("main.html")
+
+# Main_User
+@app.route("/main", methods=["GET", "POST"])
+def main_user():
+    
+    return render_template("main_user.html")
+
+# Search
+@app.route("/search", methods=["GET", "POST"])
+def search():
+    # Extract search term and page number
+    search_query = request.args.get('search', '')
+    page = request.args.get('page', 1)  # Default to page 1 if not provided
+
+    # Add your search logic here to get results...
+
+    # Render the search template and pass the page number
+    return render_template("search.html", page=int(page), keyword=search_query, total_pages=5, results=[])
+
+# List
+@app.route("/list", methods=["GET", "POST"])
+def list():
+    # Extract page number, default to 1 if not provided
+    page = request.args.get('page', 1)
+
+    # Add your logic to fetch the list data here...
+    
+    return render_template("list.html", page=int(page), total_pages=5, results=[])
+# Login
+@app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         username = request.form['username']
         password = request.form['password']
 
-        # TODO # 4: Hash the password using SHA-256
+        # Hash the password using SHA-256
         hashed_password = hashlib.sha256(password.encode()).hexdigest()
-        # password = ???
 
         # Connect to the database
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        # TODO # 2. Check if the user exists in the database and whether the password is correct
+        # Check if the user exists in the database and whether the password is correct
         # Query to check the user
         try:
             query = "SELECT password FROM users WHERE username = %s"
             cursor.execute(query, (username,))
             result = cursor.fetchone()
-
-            # if ???
             if result:
                 stored_password = result[0]
                 if stored_password == hashed_password:
                     session['username'] = username
-                    return redirect("/welcome")
+                    return redirect("/main")
                 else:
                     flash("Incorrect password.", "danger")
             else:
@@ -55,19 +89,8 @@ def login():
         finally:
             cursor.close()
             conn.close()
-
-        # if pass the check, redirect to the welcome page and store the username in the session
-        # session['username'] = username
-        # return redirect("/welcome") # commit this line after completing TODO # 2
         
     return render_template("login.html")
-
-# Welcome Page
-@app.route("/welcome")
-def welcome():
-    if 'username' not in session:
-        return redirect("/")
-    return render_template("welcome.html")
 
 # Logout
 @app.route("/logout")
@@ -84,26 +107,13 @@ def signup():
 
         # TODO # 4: Hash the password using SHA-256
         hashed_password = hashlib.sha256(password.encode()).hexdigest()
-        # password = ???
 
         # Connect to the database
         conn = get_db_connection()
         cursor = conn.cursor()
 
 
-
-        # TODO # 3: Add the query to insert a new user into the database
-        # try:
-        #     # Insert new user into the database
-        #     cursor.execute(???)
-        #     conn.commit()
-        #     flash("Account created successfully! Please log in.", "success")
-        #     return redirect("/")
-        # except mysql.connector.Error as err:
-        #     flash(f"Error: {err}", "danger")
-        # finally:
-        #     cursor.close()
-        #     conn.close()
+        # Add the query to insert a new user into the database
         try:
             query = "INSERT INTO users (username, password) VALUES (%s, %s)"
             cursor.execute(query, (username, hashed_password))
@@ -115,7 +125,6 @@ def signup():
         finally:
             cursor.close()
             conn.close()
-    
     return render_template("signup.html")
 
 

@@ -331,5 +331,9 @@ a {
     border-right: 1px solid #3d1101;
 }
 
-
+.welcome-text {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
 
