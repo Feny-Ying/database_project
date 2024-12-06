@@ -3,13 +3,14 @@
     margin: 0;
 }
 
-html, body {
-    height: 100%; 
-}
-
 body {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
+    height: 100%;
+}
+
+main {
+    flex: 1; 
 }
 
 .content {
@@ -240,10 +241,14 @@ footer {
     z-index: 1000;
 }
 
-.content {
-    margin-top: 60px; 
-    margin-right: 220px;
+
+
+.list {
+    flex: 1;
     padding: 20px;
+    background-color: #f4f4f4;
+    margin-right: 220px;
+    overflow: auto;
 }
 
 
@@ -331,9 +336,5 @@ a {
     border-right: 1px solid #3d1101;
 }
 
-.welcome-text {
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
-}
+
 
