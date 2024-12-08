@@ -18,10 +18,9 @@
                 </div>
             </div>
         </form>
-        <h2>Welcome, {{ session['username'] }}!</h2>
         <ul>
-            <li><a href="/search">Main Page</a></li>
-            <li>Log in</li>
+            <li class="welcome-text">Welcome, {{ session['username'] }}!</li>
+            <li><a href="/main_user">Main Page</a></li>
         </ul>
 
     </header>

@@ -62,6 +62,7 @@ def list():
     # Add your logic to fetch the list data here...
     
     return render_template("list.html", page=int(page), total_pages=5, results=[])
+
 # Login
 @app.route("/login", methods=["GET", "POST"])
 def login():

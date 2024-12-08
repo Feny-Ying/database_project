@@ -67,7 +67,7 @@ header a:hover{
     text-decoration: underline;
 }
 
-.ayame {
+.tokyo {
     background-color: rgba(14, 10, 13, 0.5);
     color: rgb(40, 8, 31);
     height: 140vh;
@@ -81,11 +81,11 @@ header a:hover{
     align-items: center;
     justify-content: center;
 }
-    .ayame h2 {
+    .tokyo h2 {
         color: white;
         font-size: 80px;
     }
-.ayame a{
+.tokyo a{
     font-size: 18px;
     color: rgb(18, 17, 17);
     text-decoration: none;
@@ -93,7 +93,7 @@ header a:hover{
     padding: 10px 20px;
     border-radius:5px;
 }
-.ayame p{
+.tokyo p{
     color: #847be8;
     font-size: 30px;
     margin: 25px 0;
@@ -107,101 +107,6 @@ footer {
     align-items: center;
     font-size: 14px;
     
-}
-.ina{
-    background-color: rgba(2, 2, 18, 0.4);
-    color: rgb(47, 17, 242);
-    height: 140vh;
-    background-image: url(images/maxresdefault.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    background-blend-mode: darken;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content:center;
-
-}
-.ina h2{
-    font-size: 80px;
-}
-.ina a{
-    font-size: 18px;
-    color: rgb(18, 17, 17);
-    text-decoration: none;
-    border:1px solid #ACACAC;
-    padding: 10px 20px;
-    border-radius:5px;
-}
-.ina p{
-    color: #100e1e;
-    font-size: 30px;
-    margin: 25px 0;
-}
-
-.aqua{
-    background-color: rgba(2, 2, 18, 0.4);
-    color: rgba(243, 57, 184, 0.6);
-    height: 140vh;
-    background-image: url(images/1568913536_rl6wc7_1568913483_11s0bav_att-url-download.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    background-blend-mode: darken;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content:center;
-
-}
-.aqua h2{
-    font-size: 80px;
-}
-.aqua a{
-    font-size: 18px;
-    color: rgb(18, 17, 17);
-    text-decoration: none;
-    border:1px solid #ACACAC;
-    padding: 10px 20px;
-    border-radius:5px;
-}
-.aqua p{
-    color: #0c0554;
-    font-size: 30px;
-    margin: 25px 0;
-}
-
-.korone{
-    background-color: rgba(2, 2, 18, 0.4);
-    color: rgba(72, 30, 4);
-    height: 140vh;
-    background-image: url(images/23ebd08a946caecc989d41fc2d43c0f008a62d24.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    background-blend-mode: darken;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content:center;
-
-}
-.korone h2{
-    font-size: 80px;
-}
-.korone a{
-    font-size: 18px;
-    color: rgb(230, 14, 43);
-    text-decoration: none;
-    border:1px solid #ACACAC;
-    padding: 10px 20px;
-    border-radius:5px;
-}
-.korone p{
-    color: #e7df09;
-    font-size: 30px;
-    margin: 25px 0;
 }
 
 .pagination {
