@@ -56,12 +56,46 @@ def search():
 # List
 @app.route("/list", methods=["GET", "POST"])
 def list():
-    # Extract page number, default to 1 if not provided
     page = request.args.get('page', 1)
-
-    # Add your logic to fetch the list data here...
     
-    return render_template("list.html", page=int(page), total_pages=5, results=[])
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # query_id = "SELECT id FROM users WHERE username = %s"
+    # username = session['username']
+    # cursor.execute(query_id, (username,))
+
+    # # Fetch the result
+    # result = cursor.fetchone()
+        
+    # user_id = result[0]
+    
+    user_id = session['id']
+    
+    print(user_id)
+    
+    try:
+        query_list = """
+        SELECT l.list_id, l.name, l.description
+        FROM user_list ul
+        JOIN list l ON ul.list_id = l.list_id
+        WHERE ul.user_id = %s
+        """
+        cursor.execute(query_list, (user_id,))
+        
+        user_list = cursor.fetchall()
+        
+        
+
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        
+    finally:
+        # Close the cursor and connection
+        cursor.close()
+        conn.close()
+        
+    return render_template("list.html", page=int(page), total_pages=int(count/10), results=[])
 
 # Login
 @app.route("/login", methods=["GET", "POST"])

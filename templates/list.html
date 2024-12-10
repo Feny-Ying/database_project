@@ -29,30 +29,10 @@
     
     <div class="list">
         <ul>
-            <h2>1</h2>
-            <h2>1</h2>
-            <h2>1</h2>
-            <h2>1</h2>
-            <h2>1</h2>
-            <h2>1</h2>
-            <h2>1</h2>
-            <h2>1</h2>
-            <h2>1</h2>
-            <h2>1</h2>
-            <h2>1</h2>
-            <h2>1</h2>
-            <h2>1</h2>
-            <h2>1</h2>
-            <h2>1</h2>
-            <h2>1</h2>
-            <h2>1</h2>
-            <h2>1</h2>
-            <h2>1</h2>
-            <h2>1</h2>
-            <h2>1</h2>
-            <h2>1</h2>
-            <h2>1</h2>
-            <h2>1</h2>
+            {% for item in user_list %}
+            <li>{{ item[0] }}</li>
+            {% endfor %}
+            
             {% for result in results %}
             <li>
                 {% if result[1].endswith(('.jpg', '.png', '.gif')) %}
