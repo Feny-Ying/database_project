@@ -61,16 +61,13 @@ def list():
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    # query_id = "SELECT id FROM users WHERE username = %s"
-    # username = session['username']
-    # cursor.execute(query_id, (username,))
+    query_id = "SELECT id FROM users WHERE username = %s"
+    username = session['username']
+    cursor.execute(query_id, (username,))
 
-    # # Fetch the result
-    # result = cursor.fetchone()
+    result = cursor.fetchone()
         
-    # user_id = result[0]
-    
-    user_id = session['id']
+    user_id = result[0]
     
     print(user_id)
     
