@@ -46,17 +46,53 @@ def main_user():
 def search():
     # Extract search term and page number
     search_query = request.args.get('search', '')
-    page = request.args.get('page', 1)  # Default to page 1 if not provided
+    page = int(request.args.get('page', 1))  # Default to page 1 if not provided
+    per_page = 10
+    offset = (page - 1) * per_page
 
-    # Add your search logic here to get results...
+    conn = get_db_connection()
+    cursor = conn.cursor()
 
-    # Render the search template and pass the page number
-    return render_template("search.html", page=int(page), keyword=search_query, total_pages=5, results=[])
+    try:
+        # Search query to get matching hotel names
+        query_search = """
+        SELECT hotel_id, hotel_name, description
+        FROM hotels
+        WHERE hotel_name LIKE %s
+        LIMIT %s OFFSET %s
+        """
+        cursor.execute(query_search, (f"%{search_query}%", per_page, offset))
+        results = cursor.fetchall()
+
+        # Get the total count of matching results
+        query_count = """
+        SELECT COUNT(*)
+        FROM hotels
+        WHERE hotel_name LIKE %s
+        """
+        cursor.execute(query_count, (f"%{search_query}%",))
+        total_count = cursor.fetchone()[0]
+        total_pages = (total_count + per_page - 1) // per_page
+
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        results = []
+        total_pages = 1
+
+    finally:
+        # Close the cursor and connection
+        cursor.close()
+        conn.close()
+
+    # Render the search template and pass the results and pagination information
+    return render_template("search.html", page=page, keyword=search_query, total_pages=total_pages, results=results)
 
 # List
 @app.route("/list", methods=["GET", "POST"])
 def list():
-    page = request.args.get('page', 1)
+    page = int(request.args.get('page', 1))
+    per_page = 10
+    offset = (page - 1) * per_page
     
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -77,22 +113,34 @@ def list():
         FROM user_list ul
         JOIN list l ON ul.list_id = l.list_id
         WHERE ul.user_id = %s
+        LIMIT %s OFFSET %s
         """
-        cursor.execute(query_list, (user_id,))
+        cursor.execute(query_list, (user_id, per_page, offset))
         
         user_list = cursor.fetchall()
         
-        
+        # Get the total count of favorites
+        query_count = """
+        SELECT COUNT(*)
+        FROM user_list ul
+        JOIN list l ON ul.list_id = l.list_id
+        WHERE ul.user_id = %s
+        """
+        cursor.execute(query_count, (user_id,))
+        total_count = cursor.fetchone()[0]
+        total_pages = (total_count + per_page - 1) // per_page
 
     except mysql.connector.Error as err:
         print(f"Error: {err}")
+        user_list = []
+        total_pages = 1
         
     finally:
         # Close the cursor and connection
         cursor.close()
         conn.close()
         
-    return render_template("list.html", page=int(page), total_pages=int(count/10), results=[])
+    return render_template("list.html", page=page, total_pages=total_pages, results=user_list)
 
 # Login
 @app.route("/login", methods=["GET", "POST"])
