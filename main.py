@@ -8,10 +8,10 @@ app.secret_key = "your_secret_key"
 
 # Database Configuration
 db_config = {
-    'host': 'localhost',  # Change this to your MySQL host
-    'user': 'root',  # Change this to your MySQL username
-    'password': '24280143',  # Change this to your MySQL password
-    'database': 'db_project',  # Change this to your MySQL database name
+    'host': '140.113.69.11',  # Change this to your MySQL host
+    'user': 'user',  # Change this to your MySQL username
+    'password': '1234',  # Change this to your MySQL password
+    'database': 'FINAL',  # Change this to your MySQL database name
 }
 
 # Database Connection
@@ -24,12 +24,53 @@ def main():
     if 'username' in session:
         session.pop('username', None)
     
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    
     if request.method == "POST":
-        search = request.form['search']
         
-        return redirect("/search")
-        
-    return render_template("main.html")
+        # Collect search and filter parameters from the form
+        search = request.form.get('search', '').strip()
+        price_min = request.form.get('price-min')
+        price_max = request.form.get('price-max')
+        area = request.form.get('area')
+        stars = request.form.get('stars')
+        room_type = request.form.get('roomtype')
+
+        # Build the query dynamically based on the filters
+        query = "SELECT * FROM hotels WHERE 1=1"
+        params = []
+
+        if search:
+            query += " AND hotel_name LIKE %s"
+            params.append(f"%{search}%")
+        if price_min:
+            query += " AND price >= %s"
+            params.append(price_min)
+        if price_max:
+            query += " AND price <= %s"
+            params.append(price_max)
+        if area:
+            query += " AND area = %s"
+            params.append(area)
+        if stars and stars != "0":
+            query += " AND stars >= %s"
+            params.append(stars)
+        if room_type:
+            query += " AND room_type = %s"
+            params.append(room_type)
+
+        # Execute the query
+        cursor.execute(query, params)
+        results = cursor.fetchall()
+
+        # Close the connection
+        cursor.close()
+        conn.close()
+
+        return render_template("main.html", results=results, filters=request.form)
+    
+    return render_template("main.html", results=[], filters={})
 
 #Main_User
 @app.route("/main_user", methods=["GET", "POST"])
@@ -206,7 +247,7 @@ def signup():
             cursor.execute(query, (username, hashed_password))
             conn.commit()
             flash("Account created successfully! Please log in.", "success")
-            return redirect("/")
+            return redirect("/login")
         except mysql.connector.Error as err:
             flash(f"Error: {err}", "danger")
         finally:
