@@ -197,15 +197,84 @@ a {
     color: #3d1101;
 }
 
-.wrap {
-    position: absolute; 
-    left: 80px;
-    width: 100%; 
-    max-width: 760px; 
-    margin: 20px auto;
+
+/* 新增的條件列表樣式 */
+.filter-list {
+    display: none; /* 默认为隐藏 */
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f7f7f7;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 760px;
+    position: absolute;  /* 确保条件列表在search-bar下方 */
+    top: 47px; /* 设置一个合适的偏移量，确保它出现在search-bar下方 */
+    left: 80px;  /* 保证和search-bar对齐 */
 }
 
+/* 顯示條件列表 */
+.filter-list.active {
+    display: block;
+}
 
+.filter-list form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* 條件項目樣式 */
+.filter-item {
+    margin-bottom: 10px;
+}
+
+.filter-item label {
+    margin-right: 5px;
+}
+
+.filter-item input, .filter-item select {
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: calc(100% - 18px); /* 使输入框宽度与search-bar一致 */
+}
+
+/* 統一的提交按鈕 */
+.submit-btn {
+    padding: 10px;
+    background-color: #3d1101;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+    max-width: 760px;
+    font-size: 16px;
+}
+
+/* 搜尋按鈕樣式 */
+.search-btn {
+    width: 36px;
+    height: 32px;
+    background-color: #3d1101;
+    color: #efe9e7;
+    outline: none;
+    border: 2px solid #3d1101;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+/* 結束條件搜尋區塊的樣式 */
+.wrap {
+    position: absolute;
+    left: 80px;
+    width: 100%;
+    max-width: 760px;
+    margin: 20px auto;
+}
 
 .search {
     position: relative;
@@ -221,18 +290,6 @@ a {
     background-color: #efe9e7;
 }
 
-.search-btn {
-    width: 36px;
-    height: 32px;
-    background-color: #3d1101;
-    color: #efe9e7;
-    outline: none;
-    border: 2px solid #3d1101;
-    cursor: pointer;
-    position: absolute;
-    top: 0;
-    right: 0;
-}
 
 .pay {
     padding-right: 10px;

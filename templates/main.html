@@ -8,16 +8,83 @@
 </head>
 <body>
     <header>
-        <button class="menu">&#9776</button>
+        <<button class="menu">&#9776;</button>
         <form method="POST">
             <div class="wrap">
                 <div class="search">
                     <input class="search-bar" type="text" name="search" id="search" placeholder="請輸入關鍵字">
-                    <button class="search-btn">
-                    </button>
+                    <button class="search-btn"></button>
                 </div>
             </div>
         </form>
+
+        <!-- 條件搜尋 -->
+        <div class="filter-list" id="filter-list">
+            <form method="POST" action="/search">
+                <!-- 價格區間 -->
+                <div class="filter-item">
+                    <label for="price-min">價格下限：</label>
+                    <input type="number" id="price-min" name="price-min" placeholder="最小價格">
+                    <label for="price-max">價格上限：</label>
+                    <input type="number" id="price-max" name="price-max" placeholder="最大價格">
+                </div>
+
+                            <!-- 東京區域選擇 -->
+            <div class="filter-item">
+                <label for="area">地區：</label>
+                <select id="area" name="area">
+                    <option value="">選擇地區</option>
+                    <option value="Adachi">足立区</option>
+                    <option value="Arakawa">荒川区</option>
+                    <option value="Bunkyō">文京区</option>
+                    <option value="Chiyoda">千代田区</option>
+                    <option value="Chūō">中央区</option>
+                    <option value="Edogawa">江戸川区</option>
+                    <option value="Itabashi">板橋区</option>
+                    <option value="Katsushika">葛飾区</option>
+                    <option value="Kōtō">江東区</option>
+                    <option value="Meguro">目黒区</option>
+                    <option value="Minato">港区</option>
+                    <option value="Nakano">中野区</option>
+                    <option value="Nerima">練馬区</option>
+                    <option value="Ōta">大田区</option>
+                    <option value="Setagaya">世田谷区</option>
+                    <option value="Shibuya">渋谷区</option>
+                    <option value="Shinagawa">品川区</option>
+                    <option value="Suginami">杉並区</option>
+                    <option value="Sumida">墨田区</option>
+                    <option value="Taitō">台東区</option>
+                    <option value="Toshima">豊島区</option>
+                </select>
+            </div>
+
+                <!-- 星數選擇 -->
+                <div class="filter-item">
+                    <label for="stars">星數：</label>
+                    <select id="stars" name="stars">
+                        <option value="0">所有</option>
+                        <option value="1">1 顆星以上</option>
+                        <option value="2">2 顆星以上</option>
+                        <option value="3">3 顆星以上</option>
+                        <option value="4">4 顆星以上</option>
+                        <option value="5">5 顆星以上</option>
+                    </select>
+                </div>
+                
+                <!-- 房形 -->
+                <div class="filter-item">
+                    <label for="roomtype">房形：</label>
+                    <select id="roomtype" name="roomtype">
+                        <option value="Entire home/apt">整套房屋/公寓</option>
+                        <option value="Private room">私人房间</option>
+                        <option value="Other">其他</option>
+                    </select>
+                </div>
+
+                <!-- 統一提交按鈕 -->
+                <button type="submit" class="submit-btn">提交條件搜尋</button>
+            </form>
+        </div>
         <ul>
             <li><a href="/login">Log In</a></li>
             <li><a href="/signup">Sign Up</a></li>
@@ -33,5 +100,23 @@
     <footer>
         <p>copyright @fenyying's web ALL Rights Reserved</p>
     </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchInput = document.getElementById("search");
+            const filterList = document.getElementById("filter-list");
+
+            // 显示条件搜索列表
+            searchInput.addEventListener("focus", function () {
+                filterList.classList.add("active");
+            });
+
+            // 点击页面其他地方隐藏条件搜索列表
+            document.addEventListener("click", function (event) {
+                if (!filterList.contains(event.target) && event.target !== searchInput) {
+                    filterList.classList.remove("active");
+                }
+            });
+        });
+    </script>
 </body>
 </html>
