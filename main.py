@@ -8,10 +8,10 @@ app.secret_key = "your_secret_key"
 
 # Database Configuration
 db_config = {
-    'host': '140.113.69.11',  # Change this to your MySQL host
+    'host': '35.201.204.93',  # Change this to your MySQL host
     'user': 'user',  # Change this to your MySQL username
     'password': '1234',  # Change this to your MySQL password
-    'database': 'FINAL',  # Change this to your MySQL database name
+    'database': 'Final',  # Change this to your MySQL database name
 }
 
 # Database Connection
@@ -38,11 +38,11 @@ def main():
         room_type = request.form.get('roomtype')
 
         # Build the query dynamically based on the filters
-        query = "SELECT * FROM hotels WHERE 1=1"
+        query = "SELECT * FROM listings WHERE 1=1"
         params = []
 
         if search:
-            query += " AND hotel_name LIKE %s"
+            query += " AND host_name LIKE %s"
             params.append(f"%{search}%")
         if price_min:
             query += " AND price >= %s"
@@ -51,10 +51,10 @@ def main():
             query += " AND price <= %s"
             params.append(price_max)
         if area:
-            query += " AND area = %s"
+            query += " AND region = %s"
             params.append(area)
         if stars and stars != "0":
-            query += " AND stars >= %s"
+            query += " AND rating >= %s"
             params.append(stars)
         if room_type:
             query += " AND room_type = %s"
@@ -68,26 +68,97 @@ def main():
         cursor.close()
         conn.close()
 
-        return render_template("main.html", results=results, filters=request.form)
+        # Redirect to the search route with query parameters
+        query_params = {
+            'search': search,
+            'price-min': price_min,
+            'price-max': price_max,
+            'area': area,
+            'stars': stars,
+            'roomtype': room_type
+        }
+        
+        query_params = {k: v for k, v in query_params.items() if v}
+        
+        query_string = '&'.join(f'{key}={value}' for key, value in query_params.items())
+        return redirect(f'/search?{query_string}')
     
-    return render_template("main.html", results=[], filters={})
+    return render_template("main.html")
 
 #Main_User
 @app.route("/main_user", methods=["GET", "POST"])
 def main_user():
+    if 'username' in session:
+        session.pop('username', None)
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    
     if request.method == "POST":
-        search = request.form['search']
         
-        return redirect("/search")
-        
-    return render_template("main_user.html")
+        # Collect search and filter parameters from the form
+        search = request.form.get('search', '').strip()
+        price_min = request.form.get('price-min')
+        price_max = request.form.get('price-max')
+        area = request.form.get('area')
+        stars = request.form.get('stars')
+        room_type = request.form.get('roomtype')
 
-# Search
+        # Build the query dynamically based on the filters
+        query = "SELECT * FROM listings WHERE 1=1"
+        params = []
+
+        if search:
+            query += " AND host_name LIKE %s"
+            params.append(f"%{search}%")
+        if price_min:
+            query += " AND price >= %s"
+            params.append(price_min)
+        if price_max:
+            query += " AND price <= %s"
+            params.append(price_max)
+        if area:
+            query += " AND region = %s"
+            params.append(area)
+        if stars and stars != "0":
+            query += " AND rating >= %s"
+            params.append(stars)
+        if room_type:
+            query += " AND room_type = %s"
+            params.append(room_type)
+
+        # Execute the query
+        cursor.execute(query, params)
+        results = cursor.fetchall()
+
+        # Close the connection
+        cursor.close()
+        conn.close()
+
+        # Redirect to the search route with query parameters
+        query_params = {
+            'search': search,
+            'price-min': price_min,
+            'price-max': price_max,
+            'area': area,
+            'stars': stars,
+            'roomtype': room_type
+        }
+        query_string = '&'.join(f'{key}={value}' for key, value in query_params.items())
+        return redirect(f'/search?{query_string}')
+    
+    return render_template("main_user.html", results=[], filters={})
+
 @app.route("/search", methods=["GET", "POST"])
 def search():
-    # Extract search term and page number
+    # Extract search term and filters from the request
     search_query = request.args.get('search', '')
-    page = int(request.args.get('page', 1))  # Default to page 1 if not provided
+    price_min = request.args.get('price-min')
+    price_max = request.args.get('price-max')
+    area = request.args.get('area')
+    stars = request.args.get('stars')
+    room_type = request.args.get('roomtype')
+    page = int(request.args.get('page', 1))
     per_page = 10
     offset = (page - 1) * per_page
 
@@ -95,23 +166,40 @@ def search():
     cursor = conn.cursor()
 
     try:
-        # Search query to get matching hotel names
-        query_search = """
-        SELECT hotel_id, hotel_name, description
-        FROM hotels
-        WHERE hotel_name LIKE %s
-        LIMIT %s OFFSET %s
-        """
-        cursor.execute(query_search, (f"%{search_query}%", per_page, offset))
+        # Build query dynamically
+        query = "SELECT * FROM listings WHERE 1=1"
+        params = []
+
+        if search_query:
+            query += " AND host_name LIKE %s"
+            params.append(f"%{search_query}%")
+        if price_min:
+            query += " AND price >= %s"
+            params.append(price_min)
+        if price_max:
+            query += " AND price <= %s"
+            params.append(price_max)
+        if area:
+            query += " AND region = %s"
+            params.append(area)
+        if stars and stars != "0":
+            query += " AND rating >= %s"
+            params.append(stars)
+        if room_type:
+            query += " AND room_type = %s"
+            params.append(room_type)
+
+        query += " LIMIT %s OFFSET %s"
+        params.extend([per_page, offset])
+
+        # Execute query
+        cursor.execute(query, params)
         results = cursor.fetchall()
 
-        # Get the total count of matching results
-        query_count = """
-        SELECT COUNT(*)
-        FROM hotels
-        WHERE hotel_name LIKE %s
-        """
-        cursor.execute(query_count, (f"%{search_query}%",))
+        # Get total count for pagination
+        count_query = "SELECT COUNT(*) FROM listings WHERE 1=1"
+        count_params = params[:-2]  # Exclude LIMIT and OFFSET
+        cursor.execute(count_query, count_params)
         total_count = cursor.fetchone()[0]
         total_pages = (total_count + per_page - 1) // per_page
 
@@ -121,12 +209,66 @@ def search():
         total_pages = 1
 
     finally:
-        # Close the cursor and connection
+        cursor.close()
+        conn.close()
+        
+    conn = get_db_connection()
+    cursor = conn.cursor()
+        
+    if request.method == "POST":
+        
+        # Collect search and filter parameters from the form
+        search = request.form.get('search', '').strip()
+        price_min = request.form.get('price-min')
+        price_max = request.form.get('price-max')
+        area = request.form.get('area')
+        stars = request.form.get('stars')
+        room_type = request.form.get('roomtype')
+
+        # Build the query dynamically based on the filters
+        query = "SELECT * FROM listings WHERE 1=1"
+        params = []
+
+        if search:
+            query += " AND host_name LIKE %s"
+            params.append(f"%{search}%")
+        if price_min:
+            query += " AND price >= %s"
+            params.append(price_min)
+        if price_max:
+            query += " AND price <= %s"
+            params.append(price_max)
+        if area:
+            query += " AND region = %s"
+            params.append(area)
+        if stars and stars != "0":
+            query += " AND rating >= %s"
+            params.append(stars)
+        if room_type:
+            query += " AND room_type = %s"
+            params.append(room_type)
+
+        # Execute the query
+        cursor.execute(query, params)
+        results = cursor.fetchall()
+
+        # Close the connection
         cursor.close()
         conn.close()
 
-    # Render the search template and pass the results and pagination information
-    return render_template("search.html", page=page, keyword=search_query, total_pages=total_pages, results=results)
+        # Redirect to the search route with query parameters
+        query_params = {
+            'search': search,
+            'price-min': price_min,
+            'price-max': price_max,
+            'area': area,
+            'stars': stars,
+            'roomtype': room_type
+        }
+        query_string = '&'.join(f'{key}={value}' for key, value in query_params.items())
+        return redirect(f'/search?{query_string}')
+
+    return render_template("search.html", page=page, keyword=search_query, total_pages=total_pages, results=results, filters=request.args)
 
 # List
 @app.route("/list", methods=["GET", "POST"])
