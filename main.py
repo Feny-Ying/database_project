@@ -402,6 +402,7 @@ def list():
     return render_template(
         "list.html", 
         page=page, 
+        results=results, 
         total_pages=total_pages,
         start_page=start_page, 
         end_page=end_page, 
