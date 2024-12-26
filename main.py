@@ -32,32 +32,32 @@ def main():
         
         # Collect search and filter parameters from the form
         search = request.form.get('search', '').strip()
-        price_min = request.form.get('price-min')
-        price_max = request.form.get('price-max')
-        area = request.form.get('area')
-        stars = request.form.get('stars')
-        room_type = request.form.get('roomtype')
+        price_min = request.form.get('price-min', '')
+        price_max = request.form.get('price-max', '')
+        area = request.form.get('area', '')
+        stars = request.form.get('stars', '')
+        room_type = request.form.get('roomtype', '')
 
         # Build the query dynamically based on the filters
         query = "SELECT * FROM listings WHERE 1=1"
         params = []
 
-        if search:
+        if search and search != "":
             query += " AND host_name LIKE %s"
             params.append(f"%{search}%")
-        if price_min:
+        if price_min and price_min != "":
             query += " AND price >= %s"
             params.append(price_min)
-        if price_max:
+        if price_max and price_max != "":
             query += " AND price <= %s"
             params.append(price_max)
-        if area:
-            query += " AND region = %s"
+        if area and area != "":
+            query += " AND neighbourhood = %s"
             params.append(area)
-        if stars and stars != "0":
+        if stars and stars != "":
             query += " AND rating >= %s"
             params.append(stars)
-        if room_type:
+        if room_type and room_type != "":
             query += " AND room_type = %s"
             params.append(room_type)
 
@@ -152,11 +152,11 @@ def main_user():
 def search():
     # Extract search term and filters from the request
     search_query = request.args.get('search', '')
-    price_min = request.args.get('price-min')
-    price_max = request.args.get('price-max')
-    area = request.args.get('area')
-    stars = request.args.get('stars')
-    room_type = request.args.get('roomtype')
+    price_min = request.args.get('price-min', '')
+    price_max = request.args.get('price-max', '')
+    area = request.args.get('area', '')
+    stars = request.args.get('stars', '')
+    room_type = request.args.get('roomtype', '')
     page = int(request.args.get('page', 1))
     per_page = 10
     offset = (page - 1) * per_page
@@ -172,19 +172,19 @@ def search():
         if search_query and search_query != "":
             query += " AND host_name LIKE %s"
             params.append(f"%{search_query}%")
-        if price_min:
+        if price_min and price_min != "":
             query += " AND price >= %s"
             params.append(price_min)
-        if price_max:
+        if price_max and price_max != "":
             query += " AND price <= %s"
             params.append(price_max)
-        if area:
-            query += " AND region = %s"
+        if area and area != "":
+            query += " AND neighbourhood = %s"
             params.append(area)
-        if stars and stars != "0":
+        if stars and stars != "":
             query += " AND rating >= %s"
             params.append(stars)
-        if room_type:
+        if room_type and room_type != "":
             query += " AND room_type = %s"
             params.append(room_type)
 
