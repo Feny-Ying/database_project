@@ -4,9 +4,11 @@
 }
 
 body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    height: 100%;
 }
 
 main {
@@ -19,7 +21,9 @@ main {
     background-color: #f4f4f4;
     overflow: auto; 
     position: relative; 
+    padding-bottom: 100px; 
     top: 80px; 
+    z-index:1;
 }
 
 
@@ -30,6 +34,8 @@ header{
     height: 80px;
     width: 100%;
     position: fixed;
+   /* position: relative;*/
+    z-index: 999;
 }
 
 h1{
@@ -101,6 +107,7 @@ header a:hover{
     font-size: 30px;
     margin: 25px 0;
 }
+
 footer {
     background-color: #231c12;
     color: white;
@@ -109,7 +116,9 @@ footer {
     justify-content: center;
     align-items: center;
     font-size: 14px;
-    
+    z-index:2;
+    margin: 0;
+    padding: 0;
 }
 
 .pagination {
@@ -216,6 +225,7 @@ a {
     position: absolute;  /* 确保条件列表在search-bar下方 */
     top: 47px; /* 设置一个合适的偏移量，确保它出现在search-bar下方 */
     left: 80px;  /* 保证和search-bar对齐 */
+    z-index: 9999;  /* 确保条件列表在结果列表上方 */
 }
 
 /* 顯示條件列表 */

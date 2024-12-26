@@ -131,6 +131,7 @@
         </ul>
 
     </header>
+    <main>
     <div class="content">
         
         {% if results %}
@@ -139,14 +140,14 @@
 
                 <div class="result-card">
                     <div class="result-image">
-                        <img src="{{ result.image_url }}" alt="{{ result.name }}">
+                        <img src="https://a0.muscache.com/im/pictures/38437056/d27fa43f_original.jpg?im_w=1200&im_format=avif" alt="{{ result.name }}">
                     </div>
                     <div class="result-details">
-                        <h3>{{ result.name }}</h3>
+                        <h3>{{ result.host_name}}</h3>
                         <p><strong>價格：</strong>{{ result.price or "未知" }} 元/晚</p>
                         <p><strong>地區：</strong>{{ result.region or "未知地址" }}</p>
                         <p><strong>房型：</strong>{{ result.room_type or "未指定" }}</p>
-                        <p><a href="{{ result.url }}" target="_blank">查看詳細資料</a></p>
+                        <p><a href="https://www.airbnb.com/rooms/197677?source_impression_id=p3_1735202389_P3EguTb5r_3Z3KxX" target="_blank">查看詳細資料</a></p>
                     </div>
                     <div class="result-actions">
                         <button onclick="addToWishlist('{{ result.id }}')">加入清單</button>
@@ -174,10 +175,12 @@
             {% endif %}
         </div>
     </div>
-        
+    </main>
+    123
     <footer>
         <p>copyright @fenyying's web ALL Rights Reserved</p>
     </footer>
+    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const searchInput = document.getElementById("search");

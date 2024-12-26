@@ -125,40 +125,51 @@
 
     <div class="fixed-right">固定在左側的內容</div>
     
-    <div class="list">
-        <ul>
-            {% for item in user_list %}
-            <li>{{ item[0] }}</li>
-            {% endfor %}
+    <main>
+        <div class="content">
             
-            {% for result in results %}
-            <li>
-                {% if result[1].endswith(('.jpg', '.png', '.gif')) %}
-                <img src="{{ result[1] }}" alt="Image" style="max-width: 200px; height: auto;">
-                {% else %}
-                {{ result[1] }}
+            {% if results %}
+                <div class="results">
+                    {% for result in results %}
+
+                    <div class="result-card">
+                        <div class="result-image">
+                            <img src="https://a0.muscache.com/im/pictures/38437056/d27fa43f_original.jpg?im_w=1200&im_format=avif" alt="{{ result.name }}">
+                        </div>
+                        <div class="result-details">
+                            <h3>{{ result.host_name}}</h3>
+                            <p><strong>價格：</strong>{{ result.price or "未知" }} 元/晚</p>
+                            <p><strong>地區：</strong>{{ result.region or "未知地址" }}</p>
+                            <p><strong>房型：</strong>{{ result.room_type or "未指定" }}</p>
+                            <p><a href="https://www.airbnb.com/rooms/197677?source_impression_id=p3_1735202389_P3EguTb5r_3Z3KxX" target="_blank">查看詳細資料</a></p>
+                        </div>
+                        <div class="result-actions">
+                            <button onclick="removeToWishlist('{{ result.id }}')">刪除</button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No results found for "{{ keyword }}".</p>
+            {% endif %}
+        
+            <div class="pagination">
+                {% if page > 1 %}
+                    <a href="/search?search={{ keyword }}&page={{ page - 1 }}">Previous</a>
                 {% endif %}
-                - {{ result[2] }}
-            </li>
-            {% endfor %}
-        </ul>
 
-        <div class="pagination">
-            {% if page > 1 %}
-            <a href="/search?search={{ keyword }}&page={{ page - 1 }}">Previous</a>
-            {% endif %}
+                {% for i in range(start_page, end_page + 1) %}
+                    <a href="/search?search={{ keyword }}&page={{ i }}" class="{% if i == page %}active{% endif %}">
+                        {{ i }}
+                    </a>
+                {% endfor %}
 
-            {% for i in range(1, total_pages + 1) %}
-            <a href="/search?search={{ keyword }}&page={{ i }}" class="{% if i == page %}active{% endif %}">
-                {{ i }}
-            </a>
-            {% endfor %}
-
-            {% if page < total_pages %}
-            <a href="/search?search={{ keyword }}&page={{ page + 1 }}">Next</a>
-            {% endif %}
+                {% if page < total_pages %}
+                    <a href="/search?search={{ keyword }}&page={{ page + 1 }}">Next</a>
+                {% endif %}
+            </div>
         </div>
-    </div>
+    </main>
     <footer>
         <p>copyright @fenyying's web ALL Rights Reserved</p>
     </footer>
