@@ -168,7 +168,7 @@ def search():
         query = "SELECT * FROM listings WHERE 1=1"
         params = []
 
-        if search_query:
+        if search_query and search_query != "":
             query += " AND host_name LIKE %s"
             params.append(f"%{search_query}%")
         if price_min:

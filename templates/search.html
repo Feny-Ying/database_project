@@ -133,17 +133,29 @@
     </header>
     <div class="content">
         
-        <ul>
-            {% if results %}
+        {% if results %}
+            <div class="results">
                 {% for result in results %}
-                <li>
-                    <strong>{{ result[1] }}</strong> - {{ result[2] }} <!-- Replace indices with relevant column values -->
-                </li>
+                <div class="result-card">
+                    <div class="result-image">
+                        <img src="{{ result.image_url }}" alt="{{ result.name }}">
+                    </div>
+                    <div class="result-details">
+                        <h3>{{ result.name }}</h3>
+                        <p><strong>價格：</strong>{{ result.price }} 元/晚</p>
+                        <p><strong>地址：</strong>{{ result.address }}</p>
+                        <p><strong>房型：</strong>{{ result.room_type }}</p>
+                        <p><a href="{{ result.url }}" target="_blank">查看詳細資料</a></p>
+                    </div>
+                    <div class="result-actions">
+                        <button onclick="addToWishlist('{{ result.id }}')">加入清單</button>
+                    </div>
+                </div>
                 {% endfor %}
-            {% else %}
-                <p>No results found for "{{ keyword }}".</p>
-            {% endif %}
-        </ul>
+            </div>
+        {% else %}
+            <p>No results found for "{{ keyword }}".</p>
+        {% endif %}
     
         <div class="pagination">
             {% if page > 1 %}
@@ -182,6 +194,28 @@
                 }
             });
         });
+    </script>
+    <script>
+        function addToWishlist(resultId) {
+            fetch('/wishlist', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: resultId }),
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('已加入清單！');
+                } else {
+                    alert('加入清單失敗！');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('發生錯誤，請稍後再試！');
+            });
+        }
     </script>
 </body>
 </html>
