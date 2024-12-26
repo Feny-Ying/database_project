@@ -156,22 +156,23 @@
                 {% endfor %}
             </div>
         {% else %}
-            <p>No results found for "{{ keyword }}".</p>
+            <p>No results found.</p>
         {% endif %}
     
         <div class="pagination">
             {% if page > 1 %}
-                <a href="/search?search={{ keyword }}&page={{ page - 1 }}">Previous</a>
+                <a href="/search?search={{ filters.get('search', '') }}&price-min={{ filters.get('price-min', '') }}&price-max={{ filters.get('price-max', '') }}&area={{ filters.get('area', '') }}&stars={{ filters.get('stars', '') }}&roomtype={{ filters.get('roomtype', '') }}&page={{ page - 1 }}">Previous</a>
             {% endif %}
-
+        
             {% for i in range(start_page, end_page + 1) %}
-                <a href="/search?search={{ keyword }}&page={{ i }}" class="{% if i == page %}active{% endif %}">
+                <a href="/search?search={{ filters.get('search', '') }}&price-min={{ filters.get('price-min', '') }}&price-max={{ filters.get('price-max', '') }}&area={{ filters.get('area', '') }}&stars={{ filters.get('stars', '') }}&roomtype={{ filters.get('roomtype', '') }}&page={{ i }}" 
+                   class="{% if i == page %}active{% endif %}">
                     {{ i }}
                 </a>
             {% endfor %}
-
+        
             {% if page < total_pages %}
-                <a href="/search?search={{ keyword }}&page={{ page + 1 }}">Next</a>
+                <a href="/search?search={{ filters.get('search', '') }}&price-min={{ filters.get('price-min', '') }}&price-max={{ filters.get('price-max', '') }}&area={{ filters.get('area', '') }}&stars={{ filters.get('stars', '') }}&roomtype={{ filters.get('roomtype', '') }}&page={{ page + 1 }}">Next</a>
             {% endif %}
         </div>
     </div>
