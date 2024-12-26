@@ -43,7 +43,7 @@ def main():
         params = []
 
         if search and search != "":
-            query += " AND host_name LIKE '{search}'"
+            query += " AND host_name LIKE '%{search}%'"
         if price_min and price_min != "":
             query += " AND price >= '{price_min}'"
         if price_max and price_max != "":
@@ -102,7 +102,7 @@ def main_user():
         params = []
 
         if search and search != "":
-            query += " AND host_name LIKE '{search}'"
+            query += " AND host_name LIKE '%{search}%'"
         if price_min and price_min != "":
             query += " AND price >= '{price_min}'"
         if price_max and price_max != "":
@@ -158,7 +158,7 @@ def search():
         params = []
 
         if search_query and search_query != "":
-            query += f" AND host_name LIKE '{search_query}'"
+            query += f" AND host_name LIKE '%{search_query}%'"
         if price_min and price_min != "":
             query += f" AND price >= '{price_min}'"
         if price_max and price_max != "":
@@ -198,7 +198,7 @@ def search():
         count_query = "SELECT COUNT(*) FROM listings WHERE 1=1"
         
         if search_query and search_query != "":
-            count_query += f" AND host_name LIKE '{search_query}'"
+            count_query += f" AND host_name LIKE '%{search_query}%'"
         if price_min and price_min != "":
             count_query += f" AND price >= '{price_min}'"
         if price_max and price_max != "":
@@ -240,7 +240,7 @@ def search():
         room_type = request.form.get('roomtype')
         
         if search and search != "":
-            query += " AND host_name LIKE '{search}'"
+            query += " AND host_name LIKE '%{search}%'"
         if price_min and price_min != "":
             query += " AND price >= '{price_min}'"
         if price_max and price_max != "":
@@ -312,7 +312,7 @@ def list():
         params = []
 
         if search and search != "":
-            query += " AND host_name LIKE '{search}'"
+            query += " AND host_name LIKE '%{search}%'"
         if price_min and price_min != "":
             query += " AND price >= '{price_min}'"
         if price_max and price_max != "":
