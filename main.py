@@ -297,8 +297,6 @@ def list():
         
     user_id = result[0]
     
-    print(user_id)
-    
     if request.method == "POST":
         
         # Collect search and filter parameters from the form
@@ -347,39 +345,67 @@ def list():
         return redirect(f'/search?{query_string}')
     
     try:
-        query_list = """
-        SELECT l.list_id, l.name, l.description
-        FROM user_list ul
-        JOIN list l ON ul.list_id = l.list_id
-        WHERE ul.user_id = %s
-        LIMIT %s OFFSET %s
-        """
-        cursor.execute(query_list, (user_id, per_page, offset))
+        # Build query dynamically
+        query = "SELECT * FROM listings AS L JOIN user_list AS U ON L.id = U.listing_id WHERE U.user_id = %s"
+        params = [user_id]
+        query += " LIMIT %s OFFSET %s"
+        params.extend([per_page, offset])
         
-        user_list = cursor.fetchall()
+        # Execute query to get filtered results
+        cursor.execute(query, params)
+        rows = cursor.fetchall()
         
-        # Get the total count of favorites
-        query_count = """
-        SELECT COUNT(*)
-        FROM user_list ul
-        JOIN list l ON ul.list_id = l.list_id
-        WHERE ul.user_id = %s
-        """
-        cursor.execute(query_count, (user_id,))
+        # Convert rows into a list of dictionaries
+        results = []
+        for row in rows:
+            result = {
+                'id': row[0],
+                'picture_url': row[5],
+                'url':row[1],
+                'rating': row[3],
+                'room_type': row[12],
+                'host_id': row[4],
+                'host_name': row[7],
+                'price': row[14],
+                'region': row[8],
+                'availability': row[4]
+            }
+            results.append(result)
+        print(results)
+        
+        # Get total count for pagination
+        count_query = "SELECT COUNT(*) FROM listings AS L JOIN user_list AS U ON L.id = U.listing_id WHERE U.user_id = %s"
+        params2 = [user_id]
+        
+        
+        cursor.execute(count_query, params2)
         total_count = cursor.fetchone()[0]
         total_pages = (total_count + per_page - 1) // per_page
+        
+        print(total_count)
+
+        # Calculate the range of pages to display (centered around the current page)
+        start_page = max(1, page - 5)
+        end_page = min(total_pages, page + 4)
 
     except mysql.connector.Error as err:
         print(f"Error: {err}")
-        user_list = []
+        results = []
         total_pages = 1
-        
+        start_page = 1
+        end_page = 1
+
     finally:
-        # Close the cursor and connection
         cursor.close()
         conn.close()
         
-    return render_template("list.html", page=page, total_pages=total_pages, results=user_list)
+    return render_template(
+        "list.html", 
+        page=page, 
+        total_pages=total_pages,
+        start_page=start_page, 
+        end_page=end_page, 
+    )
 
 # Login
 @app.route("/login", methods=["GET", "POST"])
@@ -464,6 +490,7 @@ def add_to_wishlist():
     hotel_id = data.get('id')
 
     if not hotel_id:
+        print("Invalid hotel ID received.")
         return {"message": "Invalid request"}, 400
 
     conn = get_db_connection()
@@ -473,15 +500,20 @@ def add_to_wishlist():
         # Fetch user ID based on username
         query_user = "SELECT id FROM users WHERE username = %s"
         cursor.execute(query_user, (session['username'],))
-        user_id = cursor.fetchone()[0]
+        user_id_result = cursor.fetchone()
+        if not user_id_result:
+            print("User not found in the database.")
+            return {"message": "User not found"}, 404
+
+        user_id = user_id_result[0]
 
         # Insert into wishlist table
-        query_add = "INSERT INTO user_list (user_id, list_id) VALUES (%s, %s)"
+        query_add = "INSERT INTO user_list (user_id, listing_id) VALUES (%s, %s)"
         cursor.execute(query_add, (user_id, hotel_id))
         conn.commit()
         return {"message": "Success"}, 200
     except mysql.connector.Error as err:
-        print(f"Error: {err}")
+        print(f"Database error: {err}")
         return {"message": "Database error"}, 500
     finally:
         cursor.close()
