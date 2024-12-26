@@ -12,6 +12,7 @@ db_config = {
     'user': 'user',  # Change this to your MySQL username
     'password': '1234',  # Change this to your MySQL password
     'database': 'Final',  # Change this to your MySQL database name
+    'ssl_disabled': True
 }
 
 # Database Connection
@@ -190,9 +191,27 @@ def search():
         query += " LIMIT %s OFFSET %s"
         params.extend([per_page, offset])
 
-        # Execute query
+        # Execute query to get filtered results
         cursor.execute(query, params)
-        results = cursor.fetchall()
+        rows = cursor.fetchall()
+        
+        # Convert rows into a list of dictionaries
+        results = []
+        for row in rows:
+            result = {
+                'id': row[0],
+                'name': row[1],
+                'rating': row[2],
+                'room_type': row[3],
+                'host_id': row[4],
+                'host_name': row[5],
+                'price': row[11],
+                'region': row[7],
+                'latitude': row[8],
+                'longitude': row[9],
+                'availability': row[15]
+            }
+            results.append(result)
 
         # Get total count for pagination
         count_query = "SELECT COUNT(*) FROM listings WHERE 1=1"
@@ -201,21 +220,27 @@ def search():
         total_count = cursor.fetchone()[0]
         total_pages = (total_count + per_page - 1) // per_page
 
+        # Calculate the range of pages to display (centered around the current page)
+        if page < 6:
+            start_page = 1
+            end_page = 10
+        else:
+            start_page = max(1, page - 5)
+            end_page = min(total_pages, page + 4)
+
     except mysql.connector.Error as err:
         print(f"Error: {err}")
         results = []
         total_pages = 1
+        start_page = 1
+        end_page = 1
 
     finally:
         cursor.close()
         conn.close()
-        
-    conn = get_db_connection()
-    cursor = conn.cursor()
-        
+
+    # Handle POST request to update the filters and redirect to search
     if request.method == "POST":
-        
-        # Collect search and filter parameters from the form
         search = request.form.get('search', '').strip()
         price_min = request.form.get('price-min')
         price_max = request.form.get('price-max')
@@ -224,49 +249,31 @@ def search():
         room_type = request.form.get('roomtype')
 
         # Build the query dynamically based on the filters
-        query = "SELECT * FROM listings WHERE 1=1"
-        params = []
-
-        if search:
-            query += " AND host_name LIKE %s"
-            params.append(f"%{search}%")
-        if price_min:
-            query += " AND price >= %s"
-            params.append(price_min)
-        if price_max:
-            query += " AND price <= %s"
-            params.append(price_max)
-        if area:
-            query += " AND region = %s"
-            params.append(area)
-        if stars and stars != "0":
-            query += " AND rating >= %s"
-            params.append(stars)
-        if room_type:
-            query += " AND room_type = %s"
-            params.append(room_type)
-
-        # Execute the query
-        cursor.execute(query, params)
-        results = cursor.fetchall()
-
-        # Close the connection
-        cursor.close()
-        conn.close()
-
-        # Redirect to the search route with query parameters
         query_params = {
             'search': search,
             'price-min': price_min,
             'price-max': price_max,
             'area': area,
             'stars': stars,
-            'roomtype': room_type
+            'roomtype': room_type,
+            'page': 1  # Reset to page 1 when form is submitted
         }
-        query_string = '&'.join(f'{key}={value}' for key, value in query_params.items())
+
+        # Redirect to the search route with query parameters
+        query_string = '&'.join(f'{key}={value}' for key, value in query_params.items() if value)
         return redirect(f'/search?{query_string}')
 
-    return render_template("search.html", page=page, keyword=search_query, total_pages=total_pages, results=results, filters=request.args)
+    # Render the search page with results and pagination
+    return render_template(
+        "search.html", 
+        page=page, 
+        keyword=search_query, 
+        total_pages=total_pages, 
+        results=results, 
+        start_page=start_page, 
+        end_page=end_page, 
+        filters=request.args
+    )
 
 # List
 @app.route("/list", methods=["GET", "POST"])

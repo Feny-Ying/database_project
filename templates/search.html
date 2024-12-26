@@ -136,15 +136,17 @@
         {% if results %}
             <div class="results">
                 {% for result in results %}
+                <p><strong>Results Data:</strong></p>
+                <pre>{{ results | tojson(indent=2) }}</pre>
                 <div class="result-card">
                     <div class="result-image">
                         <img src="{{ result.image_url }}" alt="{{ result.name }}">
                     </div>
                     <div class="result-details">
                         <h3>{{ result.name }}</h3>
-                        <p><strong>價格：</strong>{{ result.price }} 元/晚</p>
-                        <p><strong>地址：</strong>{{ result.address }}</p>
-                        <p><strong>房型：</strong>{{ result.room_type }}</p>
+                        <p><strong>價格：</strong>{{ result.price or "未知" }} 元/晚</p>
+                        <p><strong>地址：</strong>{{ result.address or "未知地址" }}</p>
+                        <p><strong>房型：</strong>{{ result.room_type or "未指定" }}</p>
                         <p><a href="{{ result.url }}" target="_blank">查看詳細資料</a></p>
                     </div>
                     <div class="result-actions">
@@ -159,17 +161,17 @@
     
         <div class="pagination">
             {% if page > 1 %}
-            <a href="/search?search={{ keyword }}&page={{ page - 1 }}">Previous</a>
+                <a href="/search?search={{ keyword }}&page={{ page - 1 }}">Previous</a>
             {% endif %}
-    
-            {% for i in range(1, total_pages + 1) %}
-            <a href="/search?search={{ keyword }}&page={{ i }}" class="{% if i == page %}active{% endif %}">
-                {{ i }}
-            </a>
+
+            {% for i in range(start_page, end_page + 1) %}
+                <a href="/search?search={{ keyword }}&page={{ i }}" class="{% if i == page %}active{% endif %}">
+                    {{ i }}
+                </a>
             {% endfor %}
-    
+
             {% if page < total_pages %}
-            <a href="/search?search={{ keyword }}&page={{ page + 1 }}">Next</a>
+                <a href="/search?search={{ keyword }}&page={{ page + 1 }}">Next</a>
             {% endif %}
         </div>
     </div>
