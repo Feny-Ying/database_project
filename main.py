@@ -60,7 +60,7 @@ def main():
         if room_type and room_type != "":
             query += " AND room_type = %s"
             params.append(room_type)
-
+            
         # Execute the query
         cursor.execute(query, params)
         results = cursor.fetchall()
@@ -170,24 +170,18 @@ def search():
         params = []
 
         if search_query and search_query != "":
-            query += " AND host_name LIKE %s"
-            params.append(f"%{search_query}%")
+            query += f" AND host_name LIKE '{search_query}'"
         if price_min and price_min != "":
-            query += " AND price >= %s"
-            params.append(price_min)
+            query += f" AND price >= '{price_min}'"
         if price_max and price_max != "":
-            query += " AND price <= %s"
-            params.append(price_max)
+            query += f" AND price <= '{price_max}'"
         if area and area != "":
-            query += " AND neighbourhood = %s"
-            params.append(area)
+            query += f" AND neighbourhood = '{area}'"
         if stars and stars != "":
-            query += " AND rating >= %s"
-            params.append(stars)
+            query += f" AND rating >= '{stars}'"
         if room_type and room_type != "":
-            query += " AND room_type = %s"
-            params.append(room_type)
-
+            query += f" AND room_type = '{room_type}'"
+            
         query += " LIMIT %s OFFSET %s"
         params.extend([per_page, offset])
 
@@ -200,19 +194,18 @@ def search():
         for row in rows:
             result = {
                 'id': row[0],
-                'name': row[1],
-                'rating': row[2],
-                'room_type': row[3],
+                'picture_url': row[5],
+                'url':row[1],
+                'rating': row[3],
+                'room_type': row[12],
                 'host_id': row[4],
-                'host_name': row[5],
-                'price': row[11],
-                'region': row[7],
-                'latitude': row[8],
-                'longitude': row[9],
-                'availability': row[15]
+                'host_name': row[7],
+                'price': row[14],
+                'region': row[8],
+                'availability': row[4]
             }
             results.append(result)
-
+        print(rows)
         # Get total count for pagination
         count_query = "SELECT COUNT(*) FROM listings WHERE 1=1"
         count_params = params[:-2]  # Exclude LIMIT and OFFSET
