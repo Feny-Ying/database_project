@@ -136,8 +136,7 @@
         {% if results %}
             <div class="results">
                 {% for result in results %}
-                <p><strong>Results Data:</strong></p>
-                <pre>{{ results | tojson(indent=2) }}</pre>
+
                 <div class="result-card">
                     <div class="result-image">
                         <img src="{{ result.image_url }}" alt="{{ result.name }}">
@@ -145,7 +144,7 @@
                     <div class="result-details">
                         <h3>{{ result.name }}</h3>
                         <p><strong>價格：</strong>{{ result.price or "未知" }} 元/晚</p>
-                        <p><strong>地址：</strong>{{ result.address or "未知地址" }}</p>
+                        <p><strong>地區：</strong>{{ result.region or "未知地址" }}</p>
                         <p><strong>房型：</strong>{{ result.room_type or "未指定" }}</p>
                         <p><a href="{{ result.url }}" target="_blank">查看詳細資料</a></p>
                     </div>
