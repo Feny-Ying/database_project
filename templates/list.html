@@ -144,7 +144,7 @@
                             <p><a href="{{ result.url}}" target="_blank">查看詳細資料</a></p>
                         </div>
                         <div class="result-actions">
-                            <button onclick="removeToWishlist('{{ result.id }}')">刪除</button>
+                            <button onclick="removeFromWishlist('{{ result.id }}')">刪除</button>
                         </div>
                     </div>
                     {% endfor %}
@@ -190,6 +190,29 @@
                 }
             });
         });
+    </script>
+    <script>
+        function removeFromWishlist(resultId) {
+            fetch('/remove_from_wishlist', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: resultId }),
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('已從清單移除！');
+                    location.reload(); // Refresh the page to update the list
+                } else {
+                    alert('刪除失敗！');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('發生錯誤，請稍後再試！');
+            });
+        }
     </script>
 </body>
 </html>

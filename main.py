@@ -519,6 +519,49 @@ def add_to_wishlist():
     finally:
         cursor.close()
         conn.close()
+        
+# remove to list
+@app.route("/remove_from_wishlist", methods=["POST"])
+def remove_from_wishlist():
+    if 'username' not in session:
+        return {"message": "Unauthorized"}, 401
+
+    data = request.json
+    hotel_id = data.get('id')
+
+    if not hotel_id:
+        print("Invalid hotel ID received.")
+        return {"message": "Invalid request"}, 400
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    try:
+        # Fetch user ID based on username
+        query_user = "SELECT id FROM users WHERE username = %s"
+        cursor.execute(query_user, (session['username'],))
+        user_id_result = cursor.fetchone()
+        if not user_id_result:
+            print("User not found in the database.")
+            return {"message": "User not found"}, 404
+
+        user_id = user_id_result[0]
+
+        # Delete from wishlist table
+        query_delete = "DELETE FROM user_list WHERE user_id = %s AND listing_id = %s"
+        cursor.execute(query_delete, (user_id, hotel_id))
+        conn.commit()
+
+        if cursor.rowcount == 0:
+            return {"message": "No such entry found"}, 404
+
+        return {"message": "Successfully removed from wishlist"}, 200
+    except mysql.connector.Error as err:
+        print(f"Database error: {err}")
+        return {"message": "Database error"}, 500
+    finally:
+        cursor.close()
+        conn.close()
 
 
 
