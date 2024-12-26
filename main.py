@@ -88,8 +88,6 @@ def main():
 #Main_User
 @app.route("/main_user", methods=["GET", "POST"])
 def main_user():
-    if 'username' in session:
-        session.pop('username', None)
     
     conn = get_db_connection()
     cursor = conn.cursor()

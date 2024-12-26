@@ -18,7 +18,10 @@ main {
     padding: 20px;
     background-color: #f4f4f4;
     overflow: auto; 
+    position: relative; 
+    top: 80px; 
 }
+
 
 
 
@@ -154,6 +157,8 @@ footer {
     background-color: #f4f4f4;
     margin-right: 220px;
     overflow: auto;
+    position: relative; 
+    top: 80px; 
 }
 
 
