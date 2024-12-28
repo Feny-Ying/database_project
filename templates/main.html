@@ -15,16 +15,16 @@
                 <div class="search">
                     <input class="search-bar" type="text" name="search" id="search" placeholder="請輸入關鍵字">
                     <button class="search-btn">
-                        <i class="fas fa-search"></i> <!-- Font Awesome 放大镜图标 -->
+                        <i class="fas fa-search"></i> <!-- Font Awesome magnifying glass icon -->
                     </button>
                 </div>
             </div>
         </form>
 
-        <!-- 條件搜尋 -->
+        <!--  Conditional Search  -->
         <div class="filter-list" id="filter-list">
             <form method="POST" action="/search">
-                <!-- 價格區間 -->
+                <!-- Price Range -->
                 <div class="filter-item">
                     <label for="price-min">價格下限：</label>
                     <input type="number" id="price-min" name="price-min" placeholder="最小價格">
@@ -32,7 +32,7 @@
                     <input type="number" id="price-max" name="price-max" placeholder="最大價格">
                 </div>
 
-                            <!-- 東京區域選擇 -->
+                <!-- Tokyo Area Selection -->
                 <div class="filter-item">
                     <label for="area">地區：</label>
                     <select id="area" name="area">
@@ -86,7 +86,7 @@
                     </select>
                 </div>
 
-                <!-- 星數選擇 -->
+                <!-- Star Rating Selection  -->
                 <div class="filter-item">
                     <label for="stars">星數：</label>
                     <select id="stars" name="stars">
@@ -98,8 +98,8 @@
                         <option value="5">5 顆星以上</option>
                     </select>
                 </div>
-                
-                <!-- 房形 -->
+
+                <!-- room type -->
                 <div class="filter-item">
                     <label for="roomtype">房型：</label>
                     <select id="roomtype" name="roomtype">
@@ -111,7 +111,7 @@
                     </select>
                 </div>
 
-                <!-- 統一提交按鈕 -->
+                <!-- Unified Submit Button -->
                 <button type="submit" class="submit-btn">提交條件搜尋</button>
             </form>
         </div>
@@ -135,12 +135,12 @@
             const searchInput = document.getElementById("search");
             const filterList = document.getElementById("filter-list");
 
-            // 显示条件搜索列表
+            // show filter list
             searchInput.addEventListener("focus", function () {
                 filterList.classList.add("active");
             });
 
-            // 点击页面其他地方隐藏条件搜索列表
+            // Clicking elsewhere on the page hides the condition search list
             document.addEventListener("click", function (event) {
                 if (!filterList.contains(event.target) && event.target !== searchInput) {
                     filterList.classList.remove("active");

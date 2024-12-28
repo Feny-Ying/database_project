@@ -458,7 +458,7 @@ def signup():
         username = request.form['username']
         password = request.form['password']
 
-        # TODO # 4: Hash the password using SHA-256
+        #  Hash the password using SHA-256
         hashed_password = hashlib.sha256(password.encode()).hexdigest()
 
         # Connect to the database

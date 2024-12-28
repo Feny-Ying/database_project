@@ -34,21 +34,20 @@ header{
     height: 80px;
     width: 100%;
     position: fixed;
-   /* position: relative;*/
     z-index: 999;
 }
 
 h1{
-color: white;
-position:absolute;
-left:120px;
-top:0;
-line-height:80px;
-background-image:url(images/Fenyying.png);
-background-repeat: no-repeat;
-background-position: center;
-width:275px;
-text-indent: -9999px;
+    color: white;
+    position:absolute;
+    left:120px;
+    top:0;
+    line-height:80px;
+    background-image:url(images/Fenyying.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    width:275px;
+    text-indent: -9999px;
 }
 header ul{
     position:absolute;
@@ -176,7 +175,7 @@ footer {
     display: none;
 
 }
-/* 響應式設計語法 */
+/* Responsive Design Syntax */
 @media screen and (max-width:768px){
     header ul{
         display: none;
@@ -211,10 +210,9 @@ a {
     color: #3d1101;
 }
 
-
-/* 新增的條件列表樣式 */
+/* Styles for the newly added filter list */
 .filter-list {
-    display: none; /* 默认为隐藏 */
+    display: none; /* Default is hidden */
     margin-top: 10px;
     padding: 10px;
     background-color: #f7f7f7;
@@ -222,13 +220,13 @@ a {
     border-radius: 5px;
     width: 100%;
     max-width: 760px;
-    position: absolute;  /* 确保条件列表在search-bar下方 */
-    top: 47px; /* 设置一个合适的偏移量，确保它出现在search-bar下方 */
-    left: 80px;  /* 保证和search-bar对齐 */
-    z-index: 9999;  /* 确保条件列表在结果列表上方 */
+    position: absolute; /* Ensures the filter list is positioned below the search bar */
+    top: 47px; /* Sets an appropriate offset to place it below the search bar */
+    left: 80px; /* Aligns with the search bar */
+    z-index: 9999; /* Ensures the filter list appears above the results */
 }
 
-/* 顯示條件列表 */
+/* show filter list */
 .filter-list.active {
     display: block;
 }
@@ -238,7 +236,7 @@ a {
     flex-direction: column;
 }
 
-/* 條件項目樣式 */
+/* styles of filter list */
 .filter-item {
     margin-bottom: 10px;
 }
@@ -252,10 +250,10 @@ a {
     margin-top: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: calc(100% - 18px); /* 使输入框宽度与search-bar一致 */
+    width: calc(100% - 18px); /* Makes the input field width consistent with the search bar */
 }
 
-/* 統一的提交按鈕 */
+/* Unified submit button */
 .submit-btn {
     padding: 10px;
     background-color: #3d1101;
@@ -268,7 +266,7 @@ a {
     font-size: 16px;
 }
 
-/* 搜尋按鈕樣式 */
+/* Styles for the search button */
 .search-btn {
     width: 36px;
     height: 32px;
@@ -282,7 +280,7 @@ a {
     right: 0;
 }
 
-/* 結束條件搜尋區塊的樣式 */
+/* Styles for the condition search block */
 .wrap {
     position: absolute;
     left: 80px;
@@ -317,7 +315,7 @@ a {
     font-weight: bold;
 }
 
-
+/* style of results from searching*/
 .results {
     display: flex;
     flex-wrap: wrap;
