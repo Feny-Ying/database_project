@@ -25,5 +25,5 @@ Google Cloud Platform(GCP)來對外開放我們的服務。
 最後在main.py中把Flask設定成在外部可存取的 IP 和Port上執行，並以nohup python3 main.py &來執行main.py, 
 這樣就能將 python3 main.py 命令放入後台, 藉此確保程式
 在終端機關閉後仍會繼續執行。
-能夠從外部存取的網址:[Tokyo Airbnb](http://35.201.204.93:8080)
+能夠從外部存取的網址:[Tokyo Airbnb](http://35.201.204.93:8080)目前網址已失效，沒錢租伺服器
 
